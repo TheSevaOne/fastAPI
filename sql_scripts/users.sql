@@ -4,3 +4,5 @@ CREATE TABLE `Users` (
 	`psswd` VARCHAR,
 	PRIMARY KEY (`Id`)
 );
+
+INSERT INTO Users ('Username','psswd') VALUES ('admin','admin');
