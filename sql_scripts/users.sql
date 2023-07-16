@@ -1,8 +1,8 @@
-CREATE TABLE `Users` (
-	`Id` INT NOT NULL AUTO_INCREMENT,
-	`Username` VARCHAR(25),
-	`psswd` VARCHAR,
-	PRIMARY KEY (`Id`)
+CREATE TABLE users (
+  id SERIAL NOT NULL,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id)
 );
 
-INSERT INTO Users ('Username','psswd') VALUES ('admin','admin');
+INSERT INTO users (username,password) VALUES ('admin','admin');
