@@ -1,13 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException, Form
+from fastapi import APIRouter, Depends,  Form
 import asyncpg
 from fastapi import Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi_login.exceptions import InvalidCredentialsException
+from fastapi_login import LoginManager
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm
 app_router = APIRouter()
 templates = Jinja2Templates(directory='templates')
+SECRET = b"secret-key"
+manager = LoginManager(SECRET, token_url="/login",
+                       use_cookie=True)  # todo secret to env var
+manager.cookie_name = "web-project"
 
+@manager.user_loader
+def load_user(username:str):
+    user = username
+    return user
 
 @app_router.on_event("startup")
 async def startup():
@@ -33,11 +42,14 @@ async def log_in(data: OAuth2PasswordRequestForm = Depends()):
     if ok_password != password:
         raise InvalidCredentialsException
     else:
-        return RedirectResponse("/user", status_code=status.HTTP_302_FOUND)
+        access_token = manager.create_access_token(data={"sub": username})
+        response = RedirectResponse("/user", status_code=status.HTTP_302_FOUND)
+        manager.set_cookie(response, access_token)
+        return response
 
 
 @app_router.get('/user', response_class=HTMLResponse)
-def user(request: Request):
+def user(request: Request,_=Depends(manager)):
     return templates.TemplateResponse("userpage.html", {"request": request})
 
 
