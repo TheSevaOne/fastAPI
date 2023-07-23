@@ -2,16 +2,15 @@
 {% block content %}
   <h1>Регистрация</h1>
   <form method="post",action="register">
-    <div>
+    <div class="container">
       <label for="username">Имя пользователя:</label>
-      <input type="text" id="username" name="username" value="{{ username }}">
-    </div>
-    <div>
+      <input type="text" id="username" name="username" required>
       <label for="password">Пароль</label>
-      <input type="password" id="password" name="password">
+      <input type="password" id="password" name="password" required>
     </div>
+    <button type="submit">Register</button>
     <div>
-      <input type="submit" value="Register">
+      {{error}}
     </div>
   </form>
 {% endblock %}

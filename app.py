@@ -6,6 +6,7 @@ from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi_login import LoginManager
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel
 app_router = APIRouter()
 templates = Jinja2Templates(directory='templates')
 SECRET = b"secret-key"
@@ -13,10 +14,12 @@ manager = LoginManager(SECRET, token_url="/login",
                        use_cookie=True)  # todo secret to env var
 manager.cookie_name = "web-project"
 
+
 @manager.user_loader
-def load_user(username:str):
+def load_user(username: str):
     user = username
     return user
+
 
 @app_router.on_event("startup")
 async def startup():
@@ -49,8 +52,8 @@ async def log_in(data: OAuth2PasswordRequestForm = Depends()):
 
 
 @app_router.get('/user', response_class=HTMLResponse)
-def user(request: Request,_=Depends(manager)):
-    return templates.TemplateResponse("userpage.html", {"request": request})
+def user(request: Request, username=Depends(manager)):
+    return templates.TemplateResponse("userpage.html", {"request": request, "account_name": username})
 
 
 @app_router.get("/")
@@ -58,12 +61,16 @@ def home(request: Request):
     return templates.TemplateResponse("base.html", {"request": request})
 
 
-@app_router.get("/register", response_class=HTMLResponse)
+@app_router.get('/register', response_class=HTMLResponse)
 def register(request: Request):
     return templates.TemplateResponse("regpage.html", {"request": request})
 
 
-@app_router.post("/register", response_class=HTMLResponse)
-async def register(username: str = Form(...), password: str = Form(...)):
-    print(username, password)
-    return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+@app_router.post('/register', response_class=HTMLResponse)
+async def register(request: Request, username: str = Form(...), password: str = Form(...)):
+    async with app_router.db.acquire() as connection:
+        try:
+            await connection.execute("insert into users (username, password) VALUES ($1, $2)", str(username), str(password))
+            return RedirectResponse("/login", status_code=status.HTTP_302_FOUND)
+        except:
+            return templates.TemplateResponse("regpage.html", {"request": request,"error":"Пользователь существует"})
