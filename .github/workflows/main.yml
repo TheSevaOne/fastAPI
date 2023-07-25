@@ -10,11 +10,12 @@ jobs:
       steps:
        - name: Install
          run: |
-              apt-get update
-              apt-get install debmake dh-python python3-all python3-pip  -qy
+              sudo apt-get update
+              sudo apt-get install debmake dh-python python3-all python3-pip  -qy
               pip3 install --upgrade pip
               pip3 install asyncpg fastapi fastapi-login 
-              apt-get install docker-compose -qy
+              sudo apt-get install docker-compose -qy
               pip3 install pytest
               pwd 
+              ls -la 
        
