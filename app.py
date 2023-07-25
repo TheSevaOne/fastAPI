@@ -6,7 +6,6 @@ from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi_login import LoginManager
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel
 app_router = APIRouter()
 templates = Jinja2Templates(directory='templates')
 SECRET = b"secret-key"
@@ -41,7 +40,10 @@ async def log_in(data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
     async with app_router.db.acquire() as connection:
-        ok_password, _ = await connection.fetchrow("select password,username from users where username=$1", str(username))
+        try:
+            ok_password, _ = await connection.fetchrow("select password,username from users where username=$1", str(username))
+        except:
+            return RedirectResponse("", status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
     if ok_password != password:
         raise InvalidCredentialsException
     else:
@@ -73,4 +75,4 @@ async def register(request: Request, username: str = Form(...), password: str = 
             await connection.execute("insert into users (username, password) VALUES ($1, $2)", str(username), str(password))
             return RedirectResponse("/login", status_code=status.HTTP_302_FOUND)
         except:
-            return templates.TemplateResponse("regpage.html", {"request": request,"error":"Пользователь существует"})
+            return templates.TemplateResponse("regpage.html", {"request": request, "error": "Пользователь существует"})
