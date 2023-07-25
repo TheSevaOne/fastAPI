@@ -12,5 +12,7 @@ jobs:
             apt-get update
             apt-get install debmake dh-python python3-all python3-pip  -qy
             pip3 install --upgrade pip
-            pip3 install asyncpg fastapi fastapi-login
-            pwd
+            pip3 install asyncpg fastapi fastapi-login 
+            apt-get install docker-compose
+        
+        
