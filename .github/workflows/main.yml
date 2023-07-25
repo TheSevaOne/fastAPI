@@ -8,9 +8,8 @@ jobs:
   startup:
       runs-on: ubuntu-latest
       steps:
-       - uses: actions/checkout@v2
        - name: install
-         run: |
+       - run: |
               apt-get update
               apt-get install debmake dh-python python3-all python3-pip  -qy
               pip3 install --upgrade pip
