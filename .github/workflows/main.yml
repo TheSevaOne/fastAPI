@@ -1,9 +1,9 @@
 name: App test
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 jobs:
   startup:
       runs-on: ubuntu-latest
