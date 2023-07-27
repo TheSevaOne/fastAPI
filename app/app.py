@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends,  Form
 import asyncpg
-from fastapi import Request, status
+from fastapi import Request, status,HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi_login import LoginManager
@@ -34,6 +34,7 @@ async def stop():
 def log_in(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
+@app_router.exception_handler(HTTPException)
 
 @app_router.post("/login", response_class=HTMLResponse)
 async def log_in(data: OAuth2PasswordRequestForm = Depends()):
