@@ -19,6 +19,7 @@ jobs:
               pwd 
               ls -la 
   test:
+      needs: startup
       runs-on: ubuntu-latest
       steps:
        - uses: actions/checkout@v2
