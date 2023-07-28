@@ -8,6 +8,7 @@ jobs:
   startup:
       runs-on: ubuntu-latest
       steps:
+       - uses: actions/checkout@v2
        - name: Install
          run: |
               sudo apt-get update
