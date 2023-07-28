@@ -19,7 +19,7 @@ jobs:
               pip3 install pytest
               pip3 install python-multipart
               pip3 install pytest-cov
-              sudo apt install postgresql postgresql-contrib
+              sudo apt install postgresql-client
               pip3 install httpx uvicorn
               pwd 
               ls -la 
@@ -33,7 +33,9 @@ jobs:
               docker --version
               sudo docker-compose up -d
               sudo docker ps -a
+              sudo systemctl start postgresql.service
               chmod 777  /home/runner/work/fastAPI/fastAPI/sql.sh
+
               cd  /home/runner/work/fastAPI/fastAPI/
               export PGPASSWORD=admin
               ./sql.sh
