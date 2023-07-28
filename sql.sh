@@ -1,1 +1,1 @@
-psql -h localhost -p 5432 -U admin -d test -f sql_scripts/users.sql 
+psql -h localhost -p 5432 -U admin  -d test -f sql_scripts/users.sql 

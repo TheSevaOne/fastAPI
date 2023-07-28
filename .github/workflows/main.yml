@@ -19,6 +19,7 @@ jobs:
               pip3 install pytest
               pip3 install python-multipart
               pip3 install pytest-cov
+              sudo apt install psql
               pip3 install httpx uvicorn
               pwd 
               ls -la 
@@ -27,10 +28,15 @@ jobs:
               pwd 
               ls -la 
               cd /home/runner/work/fastAPI/fastAPI/
+
               ls -la
               docker --version
               sudo docker-compose up -d
               sudo docker ps -a
+              chmod 777  /home/runner/work/fastAPI/fastAPI/sql.sh
+              cd  /home/runner/work/fastAPI/fastAPI/
+              export PGPASSWORD=admin
+              ./sql.sh
               pytest tests.py  --cov=./app  -W ignore::DeprecationWarning
 
       
