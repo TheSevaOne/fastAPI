@@ -8,6 +8,7 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: test
     ports:
-      - 5432:5432
+      - '5444:5444'
     volumes:
       - ./data:/var/lib/postgresql/data
+    command: -p 5444

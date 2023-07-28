@@ -7,6 +7,7 @@ from fastapi_login import LoginManager
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm
 from pathlib import Path
+import configparser
 app_router = APIRouter()
 SECRET = b"secret-key"
 manager = LoginManager(SECRET, token_url="/login",
@@ -14,6 +15,14 @@ manager = LoginManager(SECRET, token_url="/login",
 manager.cookie_name = "web-project"
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(Path(BASE_DIR, 'templates')))
+
+config = configparser.ConfigParser()
+config.read(str(Path(BASE_DIR,'settings.ini')))
+
+HOST = config['database']['host']
+PORT = config['database']['port']
+
+
 @manager.user_loader
 def load_user(username: str):
     user = username
@@ -23,8 +32,7 @@ def load_user(username: str):
 @app_router.on_event("startup")
 async def startup():
     print("Init database")
-    app_router.db = await asyncpg.create_pool(user='admin', password='admin', database='test', host='127.0.0.1', port='5432')
-    
+    app_router.db = await asyncpg.create_pool(user='admin', password='admin', database='test', host=str(HOST), port=str(PORT))
 
 
 @app_router.on_event("shutdown")
