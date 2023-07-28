@@ -24,6 +24,7 @@ jobs:
               pwd 
               ls -la 
               cd /home/runner/work/fastAPI/fastAPI/
+              ls -la
               docker --version
               sudo docker-compose up -d
               sudo docker ps -a
