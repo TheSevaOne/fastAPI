@@ -16,13 +16,9 @@ jobs:
               pip3 install asyncpg fastapi fastapi-login 
               sudo apt-get install docker-compose -qy
               pip3 install pytest
+              pip3 install pytest-cov
               pwd 
               ls -la 
-  test:
-      needs: startup
-      runs-on: ubuntu-latest
-      steps:
-       - uses: actions/checkout@v2
        - name: Testing
          run: |
               pwd 
