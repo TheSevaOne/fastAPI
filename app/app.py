@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends,  Form
 import asyncpg
-from fastapi import Request, status,HTTPException
+from fastapi import Request, status, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi_login import LoginManager
@@ -53,6 +53,13 @@ async def log_in(data: OAuth2PasswordRequestForm = Depends()):
         response = RedirectResponse("/user", status_code=status.HTTP_302_FOUND)
         manager.set_cookie(response, access_token)
         return response
+
+
+@app_router.get("/logout")
+def logout(response: Response):
+    response = RedirectResponse('/login', status_code=302)
+    response.delete_cookie(key="sub")
+    return response
 
 
 @app_router.get('/user', response_class=HTMLResponse)

@@ -1,6 +1,6 @@
 import fastapi
-from .app import app_router
-
+from  app import app_router
+import uvicorn
 def router(obj):
 	obj.include_router(app_router)
 def start():
@@ -9,5 +9,4 @@ def start():
 	return app 
 
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run("main:start", port=5000, log_level="info")
