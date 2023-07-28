@@ -14,8 +14,6 @@ manager = LoginManager(SECRET, token_url="/login",
 manager.cookie_name = "web-project"
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(Path(BASE_DIR, 'templates')))
-
-
 @manager.user_loader
 def load_user(username: str):
     user = username
@@ -24,7 +22,9 @@ def load_user(username: str):
 
 @app_router.on_event("startup")
 async def startup():
+    print("Init database")
     app_router.db = await asyncpg.create_pool(user='admin', password='admin', database='test', host='127.0.0.1', port='5432')
+    
 
 
 @app_router.on_event("shutdown")
@@ -57,7 +57,7 @@ async def log_in(data: OAuth2PasswordRequestForm = Depends()):
 
 @app_router.get("/logout")
 def logout(response: Response):
-    response = RedirectResponse('/login', status_code=302)
+    response = RedirectResponse('/login', status_code=status.HTTP_302_FOUND)
     response.delete_cookie("web-project")
     return response
 
