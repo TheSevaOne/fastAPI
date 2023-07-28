@@ -58,7 +58,7 @@ async def log_in(data: OAuth2PasswordRequestForm = Depends()):
 @app_router.get("/logout")
 def logout(response: Response):
     response = RedirectResponse('/login', status_code=302)
-    response.delete_cookie(key="sub")
+    response.delete_cookie("web-project")
     return response
 
 
