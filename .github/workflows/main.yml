@@ -19,7 +19,7 @@ jobs:
               pip3 install pytest
               pip3 install python-multipart
               pip3 install pytest-cov
-              sudo apt install psql
+              sudo apt install postgresql postgresql-contrib
               pip3 install httpx uvicorn
               pwd 
               ls -la 
