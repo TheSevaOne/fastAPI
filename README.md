@@ -1,3 +1,3 @@
 # fastAPI
 login app example
-https://github.com/TheSevaOne/fastAPI/actions/workflows/main/badge.svg?event=push
+[![App test](https://github.com/TheSevaOne/fastAPI/actions/workflows/main.yml/badge.svg)](https://github.com/TheSevaOne/fastAPI/actions/workflows/main.yml)
