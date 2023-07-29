@@ -8,22 +8,23 @@ from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm
 from pathlib import Path
 import configparser
-app_router = APIRouter()
-SECRET = b"secret-key"
-manager = LoginManager(SECRET, token_url="/login",
-                       use_cookie=True)  # todo secret to env var
-manager.cookie_name = "web-project"
 BASE_DIR = Path(__file__).resolve().parent
+config = configparser.ConfigParser()
+config.read(str(Path(BASE_DIR, 'settings.ini')))
+app_router = APIRouter()
+SECRET = str(config['secrets']['secret']).encode()
+manager = LoginManager(SECRET, token_url="/login",
+                       use_cookie=True)
+manager.cookie_name = str(config['secrets']['cookie'])
+
 templates = Jinja2Templates(directory=str(Path(BASE_DIR, 'templates')))
 
-config = configparser.ConfigParser()
-config.read(str(Path(BASE_DIR,'settings.ini')))
 
 HOST = config['database']['host']
 PORT = config['database']['port']
 
 
-@manager.user_loader
+@manager.user_loader()
 def load_user(username: str):
     user = username
     return user
