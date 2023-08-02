@@ -45,12 +45,10 @@ jobs:
          uses: actions-js/push@v1.4
          with:
             github_token:  ${{secrets.GITHUB_TOKEN}}
-            author_name: Vsevolod Averkov
-            author_email: sevarus66@gmail.com
             message: 'update badge'
             branch: 'main'
             empty: true
-            directiry: './coverage.svg'
+            directory: './coverage.svg'
             
 
       
