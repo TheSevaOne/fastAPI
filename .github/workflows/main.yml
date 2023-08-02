@@ -28,14 +28,12 @@ jobs:
               pwd 
               ls -la 
               cd /home/runner/work/fastAPI/fastAPI/
-
               ls -la
               docker --version
               sudo docker-compose up -d
               sudo docker ps -a
               sudo systemctl start postgresql.service
               chmod 777  /home/runner/work/fastAPI/fastAPI/sql.sh
-
               cd  /home/runner/work/fastAPI/fastAPI/
               export PGPASSWORD=admin
               ./sql.sh
@@ -47,6 +45,8 @@ jobs:
          uses: actions-js/push@v1.4
          with:
             github_token:  ${{secrets.GITHUB_TOKEN}}
+            author_name: Vsevolod Averkov
+            author_email: sevarus66@gmail.com
             message: 'update badge'
             branch: 'main'
             empty: true
