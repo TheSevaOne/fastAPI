@@ -1,4 +1,3 @@
-# fastAPI
-login app example <br/>
+# Login FastAPI app
 ![App test](https://github.com/TheSevaOne/fastAPI/actions/workflows/main.yml/badge.svg) <br/>
 ![Alt text](https://github.com/TheSevaOne/fastAPI/blob/main/coverage.svg)<br/>
