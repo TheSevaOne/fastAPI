@@ -40,6 +40,19 @@ jobs:
               export PGPASSWORD=admin
               ./sql.sh
               pytest tests.py  --cov=./app  -W ignore::DeprecationWarning
+              pip3 install coverage-badge
+              coverage-badge -o ./coverage.svg
+              ls -la
+       - name: Update badge
+         uses: actions-js/push@v1.4
+         with:
+            github_token:  ${{secrets.GITHUB_TOKEN}}
+            message: 'update badge'
+            repository: ${GITHUB_REPOSITORY}
+            branch: 'main'
+            empty: true
+            directiry: './coverage.svg'
+            
 
       
   
