@@ -39,6 +39,7 @@ jobs:
               ./sql.sh
               pytest tests.py  --cov=./app  -W ignore::DeprecationWarning
               pip3 install coverage-badge
+              rm -rf ./coverage.svg
               coverage-badge -o ./coverage.svg
               ls -la
        - name: Update badge
