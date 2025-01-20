@@ -76,14 +76,13 @@ def user(request: Request, username=Depends(manager)):
     return templates.TemplateResponse("userpage.html", {"request": request, "account_name": username})
 
 
-@app_router.get("/")
-def home(request: Request):
-    return templates.TemplateResponse("base.html", {"request": request})
-
+@app_router.get("/", response_class=HTMLResponse)
+def root(request: Request):
+    return RedirectResponse('/login', status_code=status.HTTP_302_FOUND)
 
 @app_router.get('/register', response_class=HTMLResponse)
 def register(request: Request):
-    return templates.TemplateResponse("regpage.html", {"request": request})
+    return templates.TemplateResponse("regpage.html", {"request": request}, context={"login": 1})
 
 
 @app_router.post('/register', response_class=HTMLResponse)
