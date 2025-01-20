@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends,  Form
 import asyncpg
-from fastapi import Request, status, Response
+from fastapi import Request, status, Response , HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi_login.exceptions import InvalidCredentialsException
+from fastapi_login.exceptions import InvalidCredentialsException 
 from fastapi_login import LoginManager
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordRequestForm
@@ -71,14 +71,19 @@ def logout(response: Response):
     return response
 
 
+
 @app_router.get('/user', response_class=HTMLResponse)
-def user(request: Request, username=Depends(manager)):
+def get_user(request: Request, username: str = Depends(manager)):
     return templates.TemplateResponse("userpage.html", {"request": request, "account_name": username})
 
 
 @app_router.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    return RedirectResponse('/login', status_code=status.HTTP_302_FOUND)
+        cookie = request.cookies.get("web-project")
+        if cookie is None:
+            return RedirectResponse('/login',status_code=status.HTTP_302_FOUND)
+        
+        return RedirectResponse('/user', status_code=status.HTTP_302_FOUND)
 
 @app_router.get('/register', response_class=HTMLResponse)
 def register(request: Request):
